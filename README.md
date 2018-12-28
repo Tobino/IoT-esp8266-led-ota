@@ -1,8 +1,7 @@
 # esp8266-led-ota
-A simple http server led On/Off control with OTA 
+A simple http server led On/Off control with OTA
 
-## Install
-
+/!\ WARNING OTA, is not secure at all
 
 ## First Build
 
@@ -15,6 +14,7 @@ Wire up your esp8266 on raspberry according to setup and esp brand
 `plateformio run -t upload`
 
 ## Build over OTA
+
 Make sure plateformio.ini has a correct upload_port and http://upload_port respond 200
 
 provide correct SSID and password on `config/conf`
