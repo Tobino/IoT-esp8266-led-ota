@@ -5,9 +5,8 @@
 #include "Arduino.h"
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include "../config/conf";
 
-const char* ssid = "ssid";
-const char* password = "xxxxxxx";
 MDNSResponder mdns;
 
 String HTMLpage = "";
