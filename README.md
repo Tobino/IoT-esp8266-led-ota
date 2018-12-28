@@ -4,6 +4,16 @@ A simple http server led On/Off control with OTA
 ## Install
 
 
+## First Build
+
+Change plateformio.ini with upload_port = /dev/ttyS0
+
+provide correct SSID and password on `src/main.ino`
+
+Wire up your esp8266 on raspberry according to setup and esp brand
+
+`plateformio run -t upload`
+
 ## Build over OTA
 Make sure plateformio.ini has a correct upload_port and http://upload_port respond 200
 
