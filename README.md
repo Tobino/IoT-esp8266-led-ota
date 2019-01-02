@@ -11,7 +11,7 @@ provide correct SSID and password on `config/conf`
 
 Wire up your esp8266 on raspberry according to setup and esp brand
 
-`plateformio run -t upload`
+`plateformio run -t upload && plateformio run -t uploadfs`
 
 ## Build over OTA
 
@@ -19,7 +19,7 @@ Make sure plateformio.ini has a correct upload_port and http://upload_port respo
 
 provide correct SSID and password on `config/conf`
 
-`plateformio run -t upload`
+`plateformio run -t upload && plateformio run -t uploadfs`
 
 
 Source: https://circuits4you.com/2018/02/05/esp8266-arduino-wifi-web-server-led-on-off-control

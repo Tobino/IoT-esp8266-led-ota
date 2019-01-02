@@ -3,24 +3,16 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include "Arduino.h"
+#include <FS.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include "../config/conf";
 
 MDNSResponder mdns;
 
-String HTMLpage = "";
-
 ESP8266WebServer server(80);
 
-void handleRoot() {
-  digitalWrite(LED_BUILTIN, HIGH);
-  server.send(200, "text/plain", "Bitch, it's working! (from esp8266)");
-  digitalWrite(LED_BUILTIN, LOW);
-}
-
 void handleNotFound(){
-  digitalWrite(LED_BUILTIN, HIGH);
   String message = "File Not Found\n\n";
   message += "URI: ";
   message += server.uri();
@@ -33,11 +25,9 @@ void handleNotFound(){
     message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
   }
   server.send(404, "text/plain", message);
-  digitalWrite(LED_BUILTIN, LOW);
 }
 
 void setup() {
-  HTMLpage += "<!doctype html><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>IoT</title></head><h3>IoT</h3><p>LED <a href=\"ledON\"><button>ON</button></a>&nbsp;<a href=\"ledOFF\"><button>OFF</button></a></p></html>";
 
   // Serial.begin(115200);
   // Serial.println("Booting");
@@ -103,19 +93,21 @@ void setup() {
     // Serial.println("MDNS responder started");
   }
 
-  server.on("/", handleRoot);
-
-  server.on("/inline", [](){
-    server.send(200, "text/plain", "this works as well");
-  });
+  if (SPIFFS.begin()) {
+    server.serveStatic("/", SPIFFS, "/index.html");
+  }
 
   server.on("/ledON", [](){
-    server.send(200, "text/html", HTMLpage+"<p>LED is ON</p>");
+    File file = SPIFFS.open("/ledON.html", "r");
+    server.streamFile(file, "text/html");
+    file.close();
     digitalWrite(LED_BUILTIN, LOW);
     digitalWrite(4, LOW);
   });
   server.on("/ledOFF", [](){
-    server.send(200, "text/html", HTMLpage+"<p>LED is OFF</p>");
+    File file = SPIFFS.open("/ledOFF.html", "r");
+    server.streamFile(file, "text/html");
+    file.close();
     digitalWrite(LED_BUILTIN, HIGH);
     digitalWrite(4, HIGH);
   });
